@@ -1,0 +1,60 @@
+{
+  "_buildCommand2" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : true,
+    "targets" : null
+  },
+  "buildCommand" : "build",
+  "configuredTargets" : [
+    {
+      "guid" : "79b30c670a78196d796e2bfec4cda88eb9ae6832b5d612784f9c030b310708b9"
+    }
+  ],
+  "containerPath" : "/Users/vickylin/Desktop/EECS280/p3-euchre/p3-euchre.xcodeproj",
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "indexbuild",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "macosx",
+      "sdk" : "macosx13.1",
+      "sdkVariant" : "macos",
+      "supportedArchitectures" : [
+        "arm64e",
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/vickylin/Desktop/EECS280/p3-euchre/DerivedData/p3-euchre/Index.noindex/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/vickylin/Desktop/EECS280/p3-euchre/DerivedData/p3-euchre/Index.noindex/Build/Products",
+      "derivedDataPath" : "/Users/vickylin/Desktop/EECS280/p3-euchre/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/vickylin/Desktop/EECS280/p3-euchre/DerivedData/p3-euchre/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/vickylin/Desktop/EECS280/p3-euchre/DerivedData/p3-euchre/Index.noindex/PrecompiledHeaders",
+      "pchPath" : "/Users/vickylin/Desktop/EECS280/p3-euchre/DerivedData/p3-euchre/Index.noindex/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO",
+          "INDEX_ARENA_INFO_REGULAR_BUILD_PRODUCTS_DIR" : "/Users/vickylin/Desktop/EECS280/p3-euchre/DerivedData/p3-euchre/Build/Products",
+          "ONLY_ACTIVE_ARCH" : "YES"
+        }
+      }
+    }
+  },
+  "qos" : "utility",
+  "schemeCommand" : "launch",
+  "schemeCommand2" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

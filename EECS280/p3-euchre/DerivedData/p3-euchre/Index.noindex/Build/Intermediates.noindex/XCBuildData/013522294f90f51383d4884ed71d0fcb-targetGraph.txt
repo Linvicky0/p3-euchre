@@ -1,0 +1,2 @@
+Target dependency graph (1 target)
+p3-euchre in p3-euchre, no dependencies
