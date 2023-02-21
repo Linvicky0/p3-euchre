@@ -19,6 +19,7 @@ using namespace std;
 
 TEST(test_player_insertion) {
   // Create a Human player
+  
   Player * human = Player_factory("NotRobot", "Human");
 
   // Print the player using the stream insertion operator
@@ -35,7 +36,7 @@ TEST(test_player_insertion) {
   ostringstream oss2;
   oss2 << *alice;
   ASSERT_EQUAL(oss2.str(), "Alice");
-
+  
   // Clean up players that were created using Player_factory()
   delete human;
   delete alice;
@@ -108,6 +109,7 @@ TEST(test_simple_player_play_card) {
   bob->add_card(Card(ACE, SPADES));
 
   // Bob plays a card
+  //should return nine of spades
   Card nine_diamonds(NINE, DIAMONDS);
   Card card_played = bob->play_card(
     nine_diamonds,  // Nine of Diamonds is led
