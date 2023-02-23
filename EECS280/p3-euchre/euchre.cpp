@@ -24,11 +24,13 @@ class Game {
   int pointsToWin;
   Suit trump;
   int teamtrump;
-  int winner;
-  int tricksTeam1;
-  int tricksTeam2;
+  int tricksTeam1 = 0;
+  int tricksTeam2 = 0;
+  int totalScore1 = 0;
+  int totalScore2 = 0;
   bool doShuffle = false;
   Card upcard;
+  int hand = 0;
 
   void shuffle(Pack &pack) {
     if (doShuffle) {
@@ -37,25 +39,25 @@ class Game {
   }
  
   void deal() {
+    dealer = dealer % 4;
   cout << "Hand " << dealer << endl;
   cout << players[dealer]->get_name() << " deals" << endl;
     int playerIndex = dealer + 1;
-    int num = playerIndex;
-      for (int i = playerIndex; i < dealer + 1 + (MAX_PLAYERS*2); i++) {
-      if (playerIndex== MAX_PLAYERS + 1) {
+    int num = playerIndex; 
+      for (int i = playerIndex; i < playerIndex+ (MAX_PLAYERS*2); i++) { 
+      if (i == MAX_PLAYERS + playerIndex) {
         num++;
       }
       if ((num + dealer) % 2 != 0) {
          for (int n = 0; n < 3; n++) {
-          players[playerIndex % 4]->add_card(pack.deal_one());
+          players[i % 4]->add_card(pack.deal_one());
          }
       }
          else {
            for (int n = 0; n < 2; n++) {
-          players[playerIndex % 4]->add_card(pack.deal_one());
+          players[i % 4]->add_card(pack.deal_one());
          }
          }
-         playerIndex++;
          num++;
       }
     }
@@ -70,7 +72,7 @@ class Game {
         if (i % MAX_PLAYERS == dealer) {
           isDealer = true;
         }
-        if (i > MAX_PLAYERS) {
+        if (i > dealer + MAX_PLAYERS) {
             round = 2;
         }
       if (players[i%MAX_PLAYERS]->make_trump(upcard, isDealer, round, trump)) {
@@ -87,12 +89,12 @@ class Game {
             }
             return;
       }
-
+      
        cout << players[i%MAX_PLAYERS]->get_name() << " passes" << endl;
       }
   }
   void team_trick(const int player) {
-    if ((player % MAX_PLAYERS) % 2 == 0) {
+    if (player % 2 == 0) {
             tricksTeam1++;
             return;
           }
@@ -110,9 +112,9 @@ class Game {
       Card lead = players[eldest]->lead_card(trump);
 
       cout << lead << " led by " << players[eldest]->get_name() << endl;
-
+      int winner = eldest;
       //one round = 1 trick
-    for (int i = eldest+1; i < eldest + MAX_PLAYERS; i++) {
+    for (int i = eldest+1; i < eldest + MAX_PLAYERS; i++) { 
       Card current = players[i%MAX_PLAYERS]->play_card(lead, trump);
       cout << current << " played by " 
                   << players[i%MAX_PLAYERS]->get_name() << endl;
@@ -120,10 +122,10 @@ class Game {
         max = current;
         current = lead;
         winner = i % MAX_PLAYERS;
-        team_trick(winner);
       }
     }
-   
+    team_trick(winner);
+
     cout << players[winner]->get_name() << " takes the trick\n\n";
     
        // 4 rounds = 4 tricks
@@ -143,9 +145,10 @@ class Game {
         max = current;
         current = lead;
         winner = i % MAX_PLAYERS;
-        team_trick(winner);
       }
         }
+            team_trick(winner);
+
         cout << players[winner]->get_name() << " takes the trick\n\n";
     }
   }
@@ -154,67 +157,77 @@ class Game {
      if (tricksTeam1 > tricksTeam2) {
       cout << players[0]->get_name() << " and " 
               << players[2]->get_name() << " win the hand" << endl;
-      if (tricksTeam1 == 5 || teamtrump != 1) {
+      if (teamtrump != 1) {
           team1score+=2;
+          cout << "euchred!\n";
+
       }
       else {
         team1score++;
+        if (tricksTeam1 == 5) {
+          cout << "march!\n";
+        }
       }
+      totalScore1 += team1score;
      }
      else {
     cout << players[1]->get_name() << " and " 
               << players[3]->get_name() << " win the hand" << endl;
-      if (tricksTeam2 == 5 || teamtrump != 2) {
+      if (teamtrump != 2) {
         team2score += 2;
+        cout << "euchred!\n";
+
       }
       else {
         team2score++;
+         if (tricksTeam1 == 5) {
+          cout << "march!\n";
+        }
       }
+      totalScore2 += team2score;
+      tricksTeam1 = 0;
+      tricksTeam2 = 0;
      }
-     if (tricksTeam1 == 5 || tricksTeam2 == 5) {
-        cout << "euchred!\n";
-     }
-     else {
-      cout << "march!\n";
-     }
+    
     cout << players[0]->get_name() << " and " << players[2]->get_name()
-               << " have " << team1score << " points\n\n";
+               << " have " << team1score << " points\n";
     cout << players[1]->get_name() << " and " << players[3]->get_name()
                << " have " << team2score << " points\n\n";
-   dealer++;
-       if (dealer == MAX_PLAYERS) {
-      dealer = 0;
-      }
   }
 
   public:
-  Game(string name[MAX_PLAYERS], string strategy[MAX_PLAYERS]) {
+  Game(string name[MAX_PLAYERS], string strategy[MAX_PLAYERS], int points) {
     for (int i = 0; i < MAX_PLAYERS; i++) {
       players.push_back(Player_factory(name[i],strategy[i]));
     }
+    pointsToWin = points;
 }
   
   void play(ifstream &ins, string shuf) {
 
-   pack = Pack(ins);
+       pack = Pack(ins);
    
 if (shuf == "shuffle") {
   doShuffle = true;
 }
-  while (team1score <= pointsToWin && team2score <= pointsToWin) {
+  while (totalScore1 < pointsToWin && totalScore2 < pointsToWin) {
+    pack.reset();
+      shuffle(pack);
+
      deal();
-     shuffle(pack);
      make_trump();
      play_hand();
      scoring();
+      hand++;
+      dealer++;
   }
    if (team1score > team2score) {
     cout << players[0]->get_name() << " and " 
-              << players[2]->get_name() << " wins" << endl;
+              << players[2]->get_name() << " win!" << endl;
    }
    else {
     cout << players[1]->get_name() << " and " 
-              << players[3]->get_name() << " wins" << endl;
+              << players[3]->get_name() << " win!" << endl;
    }
    
   for (size_t i = 0; i < MAX_PLAYERS; ++i) {
@@ -232,12 +245,6 @@ ifstream ins(argv[1]);
   return 1;
  }
    string shufNoShuf = argv[2];
-  //   cout << shufNoShuf << endl;
-  //  cout << "argc " << argc << endl;
-  //  cout << "atoi " << atoi(argv[3]) << " and " << atoi(argv[3]) << endl;
-  // if (argc != 12) {
-  //   cout << "hello" << endl;
-  // }
  
   if (argc != 12 || atoi(argv[3]) < 1 || atoi(argv[3]) > 100 ||
        (shufNoShuf != "noshuffle" && shufNoShuf != "shuffle")) {
@@ -274,6 +281,7 @@ string strategy[MAX_PLAYERS];
 
     }
    }
-Game game(name, strategy);
+
+Game game(name, strategy, atoi(argv[3]));
 game.play(ins, shufNoShuf);
 }

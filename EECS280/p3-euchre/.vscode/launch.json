@@ -4,26 +4,22 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        //"pack.in", "noshuffle", "1", "Adi", "Simple", "Barbara", "Simple", "Chi-Chih", "Simple", "Dabbala", "Simple"
         {
-        "name": "(lldb) Launch",
-        "type": "cppdbg",
-        "request": "launch",
-        "program": "${workspaceFolder}/Player_tests.exe",
-        "args": ["pack.in", "noshuffle", "1", "Adi", "Simple", "Barbara", "Simple", "Chi-Chih", "Simple", "Dabbala", "Simple"],
-        "stopAtEntry": false,
-        "cwd": "${workspaceFolder}",
-        "environment": [],
-        "externalConsole": false,
-        "MIMode": "lldb"
-    }
-        ,{
+            "name": "(lldb) Launch",
             "type": "lldb",
             "request": "launch",
-            "name": "Debug",
-            "program": "${workspaceFolder}/Player_tests.exe",
-            "args": ["<","pack.in"],
-            "cwd": "${workspaceFolder}"
+            "program": "${workspaceFolder}/euchre.exe",
+            "args": ["pack.in", "shuffle", "10", "Edsgar", "Simple", "Fran", "Simple", "Gabriel", "Simple", "Herb", "Simple"],
+            "stdio": ["euchre_test50.in", null, null],  
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
         }
+//            "args": ["pack.in", "noshuffle", "3", "Ivan", "Human", "Judea", "Human", "Kunle", "Human", "Liskov", "Human"],
+
+        //"pack.in", "noshuffle", "1", "Adi", "Simple", "Barbara", "Simple", "Chi-Chih", "Simple", "Dabbala", "Simple"
+       // "pack.in", "shuffle", "10", "Edsgar", "Simple", "Fran", "Simple", "Gabriel", "Simple", "Herb", "Simple"
     ]
 }

@@ -40,7 +40,7 @@ class Simple: public Player {
    void add_card(const Card &c) override {
       hand.push_back(c);
     }
-
+  
   //REQUIRES round is 1 or 2
   //MODIFIES order_up_suit
   //EFFECTS If Player wishes to order up a trump suit then return true and
@@ -95,7 +95,7 @@ class Simple: public Player {
           }
        }
 
-       if (minIndex != -1) { //check here
+       if (minIndex != -1) { 
          hand[minIndex] = upcard;
        }
        //when all of the cards in player's hand are trump
@@ -145,12 +145,16 @@ class Simple: public Player {
     }
 
     if (max.get_rank() != TWO) {
-      return max;
+      Card temp = max;
+      hand.erase(hand.begin() + maxIndex);
+      return temp;
     }
     else {
       for (int i = 0; i < int(hand.size()); i++) {
         if (hand[i].is_right_bower(trump)) {
-          return hand[i];
+          Card temp = hand[i];
+           hand.erase(hand.begin() + i);
+          return temp;
         }
         else if (hand[i].is_left_bower(trump)) {
           leftBowIndex = i;
@@ -163,9 +167,13 @@ class Simple: public Player {
     }
    }
       if(leftBowIndex != -1) {
-        return lbow;
+        Card temp = lbow;
+        hand.erase(hand.begin() + leftBowIndex);
+        return temp;
       }
-      return hand[maxIndex];
+      Card temp = max;
+      hand.erase(hand.begin() + maxIndex);
+      return temp;
    }
 
   //REQUIRES Player has at least one card
@@ -178,6 +186,7 @@ class Simple: public Player {
     int lbowIndex = -1;
     int maxIndex = -1;
     int minTrumpIndex = 0;
+    Card mintrumpcard = Card(ACE, DIAMONDS);
      bool rbow = false;
      bool minTrump = false;
 
@@ -193,13 +202,13 @@ class Simple: public Player {
       }
       if (cardSuit == ledSuit) {
         // when the right bower follows suit	
-         if (hand[i].is_right_bower(ledSuit)) {	
+         if (hand[i].is_right_bower(trump)) {	
           maxIndex = i;	
           rbow = true;	
           break;	
          }	
          // when left bower follows suit	
-         else if (hand[i].is_left_bower(ledSuit)) {
+         else if (hand[i].is_left_bower(trump)) {
           lbowIndex = i;
          }
          else if (hand[i] > maxSuit) {
@@ -228,7 +237,8 @@ class Simple: public Player {
              if (hand[i].is_left_bower(trump)) {
                 lbowIndex = i;
             }
-             else if (hand[i] <= hand[minTrumpIndex] && !hand[i].is_right_bower(trump)) {
+             else if (hand[i] <= mintrumpcard && !hand[i].is_right_bower(trump)) {
+              mintrumpcard = hand[i];
               minTrumpIndex = i;
               minTrump = true;
              }
@@ -282,6 +292,7 @@ class Human: public Player {
 //   //EFFECTS  adds Card c to Player's hand
    void add_card(const Card &c) override { 
         hand.push_back(c);
+        std::sort(hand.begin(), hand.end());  
     }
 
 //   //REQUIRES round is 1 or 2
@@ -291,6 +302,9 @@ class Human: public Player {
 //   //  not modify order_up_suit and return false.
    bool make_trump(const Card &upcard, bool is_dealer,
                           int round, Suit &order_up_suit) const override { 
+          print_hand();
+
+    cout << "Human player " << name << ", please enter a suit, or \"pass\":\n";
           string decision;
           cin >> decision;
          if (decision != "pass") {
@@ -308,21 +322,12 @@ class Human: public Player {
     print_hand();
     cout << "Discard upcard: [-1]\n";
     cout << "Human player " << name << ", please select a card to discard:\n";
-    Card discard;
-    cin >> discard;
-    int index = 0;
-    for (int i = 0; i < int(hand.size()); i++) {
-      if (hand[i] == discard) {
-         index = i;
-      }
+    int num;
+    cin >> num;
+    if (num == -1) {
+      return;
     }
-    if (discard != upcard) {
-      Card temp = hand[index];
-      hand[index] = upcard;
-      cout << temp << endl;
-    }
-      cout << upcard << endl;
-    return;
+    hand[num] = upcard;
     }
 
 //   //REQUIRES Player has at least one card
@@ -333,18 +338,12 @@ class Human: public Player {
     std::sort(hand.begin(), hand.end());  
     print_hand();
     cout << "Human player " << name << ", please select a card:\n";
-     Card lead;
-    cin >> lead;
-    int index = 0;
-     for (int i = 0; i < int(hand.size()); i++) {
-      if (hand[i] == lead) {
-         index = i;
-      }
-    }
-    cout << lead << endl;
-    Card temp = lead;
-    hand.erase(hand.begin() + index);
-    return temp;
+    int num;
+    cin >> num;
+    Card lead = hand[num];
+
+    hand.erase(hand.begin() + num); //removed the temp here
+    return lead;
      }
 
 //   //REQUIRES Player has at least one card
@@ -354,18 +353,12 @@ class Human: public Player {
    std::sort(hand.begin(), hand.end());  
     print_hand();
     cout << "Human player " << name << ", please select a card:\n";
-     Card play;
-    cin >> play;
-    int index = 0;
-     for (int i = 0; i < int(hand.size()); i++) {
-      if (hand[i] == play) {
-         index = i;
-      }
-    }
-    cout << play << endl;
-    Card temp = play;
-    hand.erase(hand.begin() + index);
-    return temp;
+     int num;
+    cin >> num;
+    Card play = hand[num];
+    
+     hand.erase(hand.begin() + num); //removed the temp here
+    return play;
     }
 
 };

@@ -6,7 +6,15 @@
 	],
 	"settings": {
 		"files.associations": {
-			"sstream": "cpp"
+			"sstream": "cpp",
+			"istream": "cpp",
+			"__hash_table": "cpp",
+			"__tree": "cpp",
+			"bitset": "cpp",
+			"locale": "cpp",
+			"memory": "cpp",
+			"optional": "cpp",
+			"ostream": "cpp"
 		},
 		"C_Cpp.errorSquiggles": "enabled"
 	}

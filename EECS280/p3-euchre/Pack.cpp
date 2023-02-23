@@ -60,17 +60,17 @@ Pack::Pack() {
    int firstIndex = 0;
    next = 0;
    //shuffle 7 times
+    Card arr[PACK_SIZE];
    for (int c = 0; c < 7; c++) {
-
-   Card arr[PACK_SIZE];
 
    for(int i = 0; i < PACK_SIZE; i++) {
       arr[i] = cards[i];
    } 
-
+// Card *arr = &cards;
+// *arr = card[#];
     for (int i = 0; i < PACK_SIZE; i++) {
     
-       if (i %2 == 0) {
+       if (i % 2 == 0) {
       Card second = arr[secondIndex + (PACK_SIZE/2)];
        cards[i] = second; 
        secondIndex++;
